@@ -1,0 +1,39 @@
+version: '3.8'
+
+services:
+  # Servicio para MySQL
+  mysql:
+    image: mysql:8.0
+    container_name: mysql-container
+    environment:
+      MYSQL_ROOT_PASSWORD: root  # Cambia esto por una contraseña segura
+      MYSQL_DATABASE: test       # El nombre de la base de datos
+    ports:
+      - "3307:3306"
+    volumes:
+      - mysql-data:/var/lib/mysql  # Persistencia de los datos
+    networks:
+      - app-network
+
+  # Servicio para la aplicación Spring Boot
+  app:
+    build:
+      context: .  # Ruta al Dockerfile de tu aplicación
+    container_name: script-runner-app
+    ports:
+      - "8080:8080"
+    environment:
+      SPRING_DATASOURCE_URL: jdbc:mysql://mysql:3306/test  # Conexión a MySQL usando el nombre del servicio 'mysql'
+      SPRING_DATASOURCE_USERNAME: root
+      SPRING_DATASOURCE_PASSWORD: root
+    depends_on:
+      - mysql  # La aplicación depende de MySQL
+    networks:
+      - app-network
+
+volumes:
+  mysql-data:  # Volumen para persistencia de los datos de MySQL
+
+networks:
+  app-network:
+    driver: bridge  # Red de tipo bridge para comunicación entre los contenedores
