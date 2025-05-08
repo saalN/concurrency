@@ -9,10 +9,12 @@ import java.util.stream.Collectors;
 
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
+import org.springframework.stereotype.Service;
 
 import com.salva.script_runner.model.ExecutionDetailEntity;
 import com.salva.script_runner.repository.ExecutionDetailRepository;
 
+@Service
 public class ScriptExecutionService {
     private static final Logger log = LoggerFactory.getLogger(ScriptExecutionService.class);
 
@@ -63,7 +65,7 @@ public class ScriptExecutionService {
                 execution.setStatus(exitCode == 0 ? "COMPLETED" : "FAILED");
 
                 log.info("[{}] Finished script {}", thread, scriptName);
-                
+
             } catch (Exception e) {
                 execution.setStatus("FAILED");
                 execution.setResult(e.getMessage());
