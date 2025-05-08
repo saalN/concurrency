@@ -3,6 +3,7 @@ package com.salva.script_runner.service;
 import java.io.BufferedReader;
 import java.io.InputStreamReader;
 import java.time.LocalDateTime;
+import java.util.List;
 import java.util.concurrent.ExecutorService;
 import java.util.concurrent.Executors;
 import java.util.stream.Collectors;
@@ -79,5 +80,16 @@ public class ScriptExecutionService {
 
         return id;
     }
+
+    public List<ExecutionDetailEntity> getExecutionDetails() {
+        return (List<ExecutionDetailEntity>) executionDetailRepository.findAll();
+
+    }
+
+    public ExecutionDetailEntity getScriptById(Long id) {
+        return executionDetailRepository.findById(id).orElseThrow();
+    }
+
+    
 
 }

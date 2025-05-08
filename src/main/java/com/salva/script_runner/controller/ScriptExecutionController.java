@@ -1,11 +1,15 @@
 package com.salva.script_runner.controller;
 
+import java.util.List;
+
 import org.springframework.http.ResponseEntity;
+import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
+import com.salva.script_runner.model.ExecutionDetailEntity;
 import com.salva.script_runner.service.ScriptExecutionService;
 
 @RestController
@@ -21,8 +25,20 @@ public class ScriptExecutionController {
 
     @PostMapping("/trigger/{scriptName:.+}")
     public ResponseEntity<Long> executeScript(@PathVariable String scriptName) {
-    Long id = scriptExecutionService.executeScript(scriptName);
-    return ResponseEntity.ok(id);
+        Long id = scriptExecutionService.executeScript(scriptName);
+        return ResponseEntity.ok(id);
+    
+    }
+
+    @GetMapping("/results")
+    public List<ExecutionDetailEntity> getExecutionResults() {
+        return scriptExecutionService.getExecutionDetails();
+    }
+
+    @GetMapping("/{id}")
+    public ResponseEntity<ExecutionDetailEntity> getScriptById(@PathVariable Long id) {
+        ExecutionDetailEntity script = scriptExecutionService.getScriptById(id);
+        return ResponseEntity.ok(script);
     }
 
 }
