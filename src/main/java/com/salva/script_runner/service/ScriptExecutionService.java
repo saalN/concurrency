@@ -4,6 +4,7 @@ import java.io.BufferedReader;
 import java.io.InputStreamReader;
 import java.time.LocalDateTime;
 import java.util.List;
+import java.util.NoSuchElementException;
 import java.util.concurrent.ExecutorService;
 import java.util.concurrent.Executors;
 import java.util.stream.Collectors;
@@ -88,6 +89,13 @@ public class ScriptExecutionService {
 
     public ExecutionDetailEntity getScriptById(Long id) {
         return executionDetailRepository.findById(id).orElseThrow();
+    }
+
+     public void deleteScriptById(Long id) {
+        if (!executionDetailRepository.existsById(id)) {
+            throw new NoSuchElementException("No se encontró el objeto con id " + id);
+        }
+        executionDetailRepository.deleteById(id);
     }
 
     
